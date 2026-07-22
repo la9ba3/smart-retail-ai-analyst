@@ -1,0 +1,21 @@
+# Python 
+__pycache__/
+*.pyc
+
+# Environnement vertuel 
+.venv/
+venv/
+
+#Variables Secrètes
+.env
+
+#Jupyter 
+.ipynb_checkpoints/
+
+#Donnee locales
+data/raw/*
+data/processed
+
+#fichiers systemes
+.DS_Store
+Thumbs.db

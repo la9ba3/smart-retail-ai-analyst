@@ -1,0 +1,6 @@
+#Dependances a ajouter progressivement 
+
+numpy
+fastapi
+pandas
+streamlit
