@@ -76,3 +76,50 @@ J'ai remplacé :
 ```python
 df = online_retail.data.features
 
+
+## 2026-07-23 - Tâche 2.3
+
+### Objectif 
+
+Nettoyer le dataset Online retail pour garder uniquement les transactions valides 
+
+### Ce que j'ai appris 
+
+J'ai appris à identifier les valeurs manquantes , les quantités invalides , les prix invalides et les  factures annulées . ainsi ajouter une colonne calculé 
+
+### Ce que j'ai coder 
+
+j'ai creer le script : data\online_retail_clean.py 
+
+le scrpt : 
+- lit 'data\raw\online_retail_raw.csv 
+- compte les problèmes de qualité
+- supprime les lignes sans `CustomerID`
+- garde seulement `Quantity > 0`
+- garde seulement `UnitPrice > 0`
+- retire les factures dont `InvoiceNo` commence par `C`
+- convertit `InvoiceDate` en date
+- convertit `CustomerID` en entier
+- crée `TotalPrice = Quantity * UnitPrice`
+- sauvegarde `data/processed/online_retail_clean.csv`
+
+### Erreurs rencontrées
+
+Au début, le script nettoyait les données en mémoire mais ne créait pas le fichier de sortie, car la ligne `clean_df.to_csv(output_path, index=False)` manquait.
+
+### Solution
+
+J'ai ajouté :
+
+```python
+clean_df.to_csv(output_path, index=False)
+avant les messages finaux du script.
+Résultats
+Lignes avant nettoyage : 541909
+CustomerID manquants : 135080
+Quantity <= 0 : 10624
+UnitPrice <= 0 : 2517
+Factures annulées : 9288
+Lignes après nettoyage : 397884
+Lignes supprimées : 144025
+Factures annulées restantes : 0
