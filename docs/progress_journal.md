@@ -1,8 +1,8 @@
-\## 2026-07-23 - Tâche 2.1
+## 2026-07-23 - Tâche 2.1
 
 
 
-\### Objectif
+### Objectif
 
 
 
@@ -10,15 +10,14 @@ Télécharger le dataset Online Retail depuis UCI et le sauvegarder localement.
 
 
 
-\### Ce que j'ai appris
-
+### Ce que j'ai appris
 
 
 J'ai appris à utiliser `ucimlrepo` pour récupérer un dataset depuis le UCI Machine Learning Repository. J'ai aussi appris qu'un dataset brut doit être sauvegardé dans `data/raw/`.
 
 
 
-\### Ce que j'ai codé
+### Ce que j'ai codé
 
 
 
@@ -26,15 +25,14 @@ J'ai créé le script `src/data/download\_online\_retail.py`. Ce script téléch
 
 
 
-\### Erreurs rencontrées
+### Erreurs rencontrées
 
 
 
 Aucune erreur bloquante pour l'instant.
 
 
-
-\### Solution
+### Solution
 
 
 
@@ -42,9 +40,39 @@ Le fichier CSV est ignoré par Git grâce à `.gitignore`, car les datasets volu
 
 
 
-\### Prochaine étape
+### Prochaine étape
 
 
 
 Valider la tâche 2.1 avant de passer à la tâche 2.2.
+
+
+## 2026-07-23 - Tâche 2.2
+
+### Objectif
+
+Comprendre les colonnes du dataset Online Retail avant de commencer le nettoyage.
+
+### Ce que j'ai appris
+
+J'ai appris à utiliser `head()`, `info()`, `describe()` et `isna().sum()` pour observer un dataset avec Pandas.
+
+J'ai aussi appris la différence entre `online_retail.data.features` et `online_retail.data.original` avec `ucimlrepo`. Dans ce projet, il faut utiliser `original` pour garder toutes les colonnes du dataset, notamment `InvoiceNo` et `StockCode`.
+
+### Ce que j'ai codé
+
+J'ai corrigé le script `src/data/download_online_retail.py` pour sauvegarder le dataset complet avec 8 colonnes.
+
+J'ai aussi créé `docs/data_dictionary.md` pour expliquer chaque colonne en français.
+
+### Erreurs rencontrées
+
+Au début, le fichier CSV ne contenait que 6 colonnes au lieu de 8, car le script utilisait `online_retail.data.features`.
+
+### Solution
+
+J'ai remplacé :
+
+```python
+df = online_retail.data.features
 

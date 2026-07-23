@@ -6,7 +6,7 @@ def main():
 
 
     online_retail = fetch_ucirepo(id=352)
-    df = online_retail.data.features
+    df = online_retail.data.original
 
     output_dir = Path("data/raw")
     output_dir.mkdir(parents=True, exist_ok=True)
