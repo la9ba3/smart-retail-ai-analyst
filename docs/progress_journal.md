@@ -123,3 +123,38 @@ Factures annulées : 9288
 Lignes après nettoyage : 397884
 Lignes supprimées : 144025
 Factures annulées restantes : 0
+
+
+## 2026-07-23 - Tâche 3.1
+
+### Objectif
+
+Calculer les KPIs globaux du dataset Online Retail nettoyé.
+
+### Ce que j'ai appris
+
+J'ai appris ce qu'est un KPI et comment calculer des indicateurs business avec Pandas. J'ai aussi appris la différence entre un script Python réutilisable et un notebook d'exploration.
+
+### Ce que j'ai codé
+
+J'ai créé `src/analysis/kpis.py` avec une fonction `calculate_global_kpis`.
+
+J'ai aussi créé `notebooks/02_eda_kpis.ipynb` pour afficher les KPIs dans un notebook.
+
+### Erreurs rencontrées
+
+Aucune erreur bloquante pour l'instant.
+
+### Solution
+
+Les KPIs sont calculés à partir du dataset nettoyé `data/processed/online_retail_clean.csv`.
+
+### Résultats
+
+Les KPIs calculés sont :
+- chiffre d'affaires total ;
+- nombre de factures ;
+- nombre de clients ;
+- nombre de produits ;
+- nombre de pays ;
+- panier moyen.
