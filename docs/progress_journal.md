@@ -158,3 +158,38 @@ Les KPIs calculés sont :
 - nombre de produits ;
 - nombre de pays ;
 - panier moyen.
+
+## 2026-07-24 - Tâche 3.2
+
+### Objectif
+
+Analyser l'évolution des ventes dans le temps.
+
+### Ce que j'ai appris
+
+J'ai appris à convertir une colonne en date avec `pd.to_datetime`, à utiliser `.dt` pour extraire des informations temporelles et à regrouper les ventes par mois avec `groupby`.
+
+### Ce que j'ai codé
+
+J'ai créé `src/analysis/time_analysis.py`.
+
+Le script :
+- lit `data/processed/online_retail_clean.csv`
+- convertit `InvoiceDate` en date
+- crée les colonnes `Year`, `Month`, `Day`, `Hour` et `YearMonth`
+- calcule le chiffre d'affaires mensuel
+- calcule le nombre de factures mensuel
+- sauvegarde `data/processed/monthly_sales.csv`
+
+J'ai aussi créé `notebooks/03_time_analysis.ipynb` avec un graphique des ventes mensuelles.
+
+### Erreurs rencontrées
+
+Au début, le script affichait `KeyError: 'YearMonth'`, car la colonne `YearMonth` n'était pas créée avant le `groupby`.
+
+### Solution
+
+J'ai ajouté :
+
+```python
+df["YearMonth"] = df["InvoiceDate"].dt.to_period("M").astype(str)
