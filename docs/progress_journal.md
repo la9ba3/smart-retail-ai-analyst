@@ -193,3 +193,45 @@ J'ai ajouté :
 
 ```python
 df["YearMonth"] = df["InvoiceDate"].dt.to_period("M").astype(str)
+
+## 2026-07-24 - Tâche 3.3
+
+### Objectif
+
+Identifier les meilleurs produits et les principaux pays en chiffre d'affaires.
+
+### Ce que j'ai appris
+
+J'ai appris à utiliser `groupby` pour regrouper les ventes par produit et par pays. J'ai aussi appris à trier les résultats avec `sort_values`, à garder les 10 premiers résultats avec `head(10)` et à créer des graphiques en barres horizontales avec Matplotlib.
+
+### Ce que j'ai codé
+
+J'ai créé `src/analysis/top_products_countries.py`.
+
+Le script calcule :
+- les 10 produits générant le plus de chiffre d'affaires ;
+- les 10 produits les plus vendus en quantité ;
+- les 10 pays générant le plus de chiffre d'affaires.
+
+J'ai aussi créé `notebooks/04_top_products_countries.ipynb` avec les tableaux et graphiques correspondants.
+
+### Erreurs rencontrées
+
+Aucune erreur bloquante pour l'instant.
+
+### Solution
+
+Les analyses utilisent le dataset nettoyé `data/processed/online_retail_clean.csv`.
+
+### Résultats
+
+Les fichiers générés localement sont :
+- `data/processed/top_products_by_revenue.csv`
+- `data/processed/top_products_by_quantity.csv`
+- `data/processed/top_countries_by_revenue.csv`
+
+Ces fichiers ne sont pas envoyés sur GitHub car `data/processed/` est ignoré.
+
+### Prochaine étape
+
+Valider la tâche 3.3 avant de passer à la construction de la table client.
