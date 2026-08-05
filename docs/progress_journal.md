@@ -235,3 +235,50 @@ Ces fichiers ne sont pas envoyés sur GitHub car `data/processed/` est ignoré.
 ### Prochaine étape
 
 Valider la tâche 3.3 avant de passer à la construction de la table client.
+
+## 2026-08-05 - Tâche 4.1
+
+### Objectif
+
+Construire une table client à partir du dataset transactionnel nettoyé.
+
+### Ce que j'ai appris
+
+J'ai appris à passer d'une table de transactions à une table client avec `groupby`. J'ai compris que chaque ligne de la nouvelle table représente un client unique.
+
+### Ce que j'ai codé
+
+J'ai créé `src/ml/customer_features.py`.
+
+Le script :
+- lit `data/processed/online_retail_clean.csv`
+- convertit `InvoiceDate` en date
+- regroupe les lignes par `CustomerID`
+- calcule la dernière date d'achat
+- calcule le nombre de factures différentes
+- calcule la quantité totale achetée
+- calcule le montant total dépensé
+- choisit le pays le plus fréquent du client
+- sauvegarde `data/processed/customer_features.csv`
+
+### Erreurs rencontrées
+
+Aucune erreur bloquante pour l'instant.
+
+### Solution
+
+La table client est créée avec `groupby("CustomerID")` et plusieurs agrégations Pandas.
+
+### Résultats
+
+Le fichier `customer_features.csv` contient une ligne par client avec les colonnes :
+- `CustomerID`
+- `last_purchase_date`
+- `frequency`
+- `total_quantity`
+- `total_spent`
+- `country`
+
+### Prochaine étape
+
+Valider la tâche 4.1 avant de passer au scoring RFM.
