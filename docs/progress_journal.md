@@ -282,3 +282,42 @@ Le fichier `customer_features.csv` contient une ligne par client avec les colonn
 ### Prochaine étape
 
 Valider la tâche 4.1 avant de passer au scoring RFM.
+
+## 2026-08-07 - Tâche 4.2
+
+### Objectif
+
+Créer un scoring RFM pour segmenter les clients selon leur récence, leur fréquence d'achat et leur montant dépensé.
+
+### Ce que j'ai appris
+
+J'ai appris que le RFM signifie Recency, Frequency et Monetary. J'ai compris que la récence mesure depuis combien de jours un client n'a pas acheté, que la fréquence mesure le nombre d'achats et que le montant mesure la dépense totale.
+
+J'ai aussi appris à utiliser `pd.qcut` pour transformer des valeurs numériques en scores de 1 à 5, et `apply(..., axis=1)` pour attribuer un segment à chaque client.
+
+### Ce que j'ai codé
+
+J'ai créé `src/ml/rfm_scoring.py`.
+
+Le script :
+- lit `data/processed/customer_features.csv`
+- calcule `recency`
+- reprend `frequency`
+- calcule `monetary`
+- crée `recency_score`, `frequency_score` et `monetary_score`
+- crée `rfm_score`
+- attribue un segment client
+- sauvegarde `data/processed/customer_rfm.csv`
+
+J'ai aussi créé `notebooks/05_rfm_scoring.ipynb` avec un graphique des segments clients.
+
+### Erreurs rencontrées
+
+Le notebook affichait `KeyError: 'segment'`, car certains noms de colonnes contenaient des espaces cachés, par exemple `" segment"` au lieu de `"segment"`.
+
+### Solution
+
+J'ai nettoyé les noms de colonnes avec :
+
+```python
+df.columns = df.columns.str.strip()
