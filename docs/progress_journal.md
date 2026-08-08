@@ -372,3 +372,44 @@ Les clusters observés sont :
 ### Prochaine étape
 
 Valider la tâche 4.3 avant de passer à l'API FastAPI minimale.
+
+## 2026-08-08 - Tâche 5.1
+
+### Objectif
+
+Créer une API minimale avec FastAPI et vérifier qu'elle répond correctement.
+
+### Ce que j'ai appris
+
+J'ai appris qu'une API permet à deux programmes de communiquer. J'ai compris qu'un endpoint est une adresse précise de l'API, comme `/health`, et que `GET` sert à récupérer une information.
+
+J'ai aussi appris que FastAPI génère automatiquement une documentation Swagger disponible sur `/docs`.
+
+### Ce que j'ai codé
+
+J'ai créé `backend/main.py`.
+
+Le fichier :
+- crée une application FastAPI
+- définit le titre, la description et la version de l'API
+- ajoute un endpoint `GET /health`
+- retourne une réponse JSON avec le statut du service
+
+### Erreurs rencontrées
+
+Aucune erreur bloquante pour l'instant.
+
+### Solution
+
+Le serveur est lancé avec `uvicorn backend.main:app --reload`.
+
+### Résultats
+
+L'endpoint `/health` retourne :
+
+```json
+{
+  "status": "ok",
+  "service": "smart-retail-ai-analyst-api",
+  "version": "0.1.0"
+}
