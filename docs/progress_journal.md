@@ -321,3 +321,54 @@ J'ai nettoyé les noms de colonnes avec :
 
 ```python
 df.columns = df.columns.str.strip()
+
+## 2026-08-08 - Tâche 4.3
+
+### Objectif
+
+Segmenter automatiquement les clients avec KMeans à partir des variables RFM.
+
+### Ce que j'ai appris
+
+J'ai appris que KMeans regroupe automatiquement les clients qui se ressemblent. J'ai compris pourquoi il faut standardiser les variables avec `StandardScaler`, car `recency`, `frequency` et `monetary` n'ont pas la même échelle.
+
+J'ai aussi appris la méthode du coude pour choisir un nombre raisonnable de clusters et l'importance d'interpréter les clusters avec une lecture business.
+
+### Ce que j'ai codé
+
+J'ai créé `src/ml/kmeans_segmentation.py`.
+
+Le script :
+- lit `data/processed/customer_rfm.csv`
+- sélectionne `recency`, `frequency` et `monetary`
+- standardise les variables avec `StandardScaler`
+- teste plusieurs valeurs de K
+- entraîne un modèle KMeans avec 4 clusters
+- ajoute une colonne `cluster`
+- crée un résumé des clusters
+- sauvegarde `customer_segments.csv`, `kmeans_elbow_scores.csv` et `kmeans_cluster_summary.csv`
+
+J'ai aussi créé `notebooks/06_kmeans_segmentation.ipynb` avec :
+- un graphique de la méthode du coude
+- un graphique du nombre de clients par cluster
+- une interprétation business des clusters
+
+### Erreurs rencontrées
+
+Aucune erreur bloquante pour l'instant.
+
+### Solution
+
+La segmentation utilise les variables RFM standardisées afin que KMeans ne soit pas dominé par la variable `monetary`.
+
+### Résultats
+
+Les clusters observés sont :
+- Cluster 2 : VIP / Champions
+- Cluster 0 : High Value Loyal Customers
+- Cluster 3 : Regular / Potential Customers
+- Cluster 1 : Dormant / Low Engagement Customers
+
+### Prochaine étape
+
+Valider la tâche 4.3 avant de passer à l'API FastAPI minimale.
