@@ -495,3 +495,37 @@ L'application Streamlit démarre avec :
 
 ```powershell
 streamlit run frontend\app.py
+
+
+## 2026-08-09 - Tâche 6.2
+
+### Objectif
+
+Créer un dashboard analytics Streamlit connecté au backend FastAPI.
+
+### Ce que j'ai appris
+
+J'ai appris que Streamlit peut appeler une API avec `requests`. J'ai compris que FastAPI fournit les données en JSON et que Streamlit transforme ces réponses en tableaux, métriques et graphiques.
+
+J'ai aussi compris qu'il faut lancer deux services pendant le développement : FastAPI pour servir les données et Streamlit pour afficher l'interface.
+
+### Ce que j'ai codé
+
+J'ai modifié `frontend/app.py`.
+
+L'application affiche maintenant :
+- un résumé du dataset ;
+- les KPIs de ventes ;
+- le top 10 produits par chiffre d'affaires ;
+- les segments RFM ;
+- une page architecture.
+
+J'ai ajouté une fonction `get_api_data` pour centraliser les appels au backend.
+
+### Erreurs rencontrées
+
+Aucune erreur bloquante pour l'instant.
+
+### Solution
+
+Les données sont récupérées depuis FastAPI avec `requests.get`,

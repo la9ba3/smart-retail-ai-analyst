@@ -1,7 +1,18 @@
 import streamlit as st
 import requests
+import pandas as pd
 
 API_BASE_URL = "http://127.0.0.1:8000"
+
+def get_api_data(endpoint: str):
+    try:
+        response = requests.get(f"{API_BASE_URL}{endpoint}", timeout=5)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as error:
+        st.error(f"API request failed: {error}")
+        return None
+
 st.set_page_config(
     page_title="Smart Retail AI Analyst",
     page_icon="🛒",
@@ -51,16 +62,50 @@ if page == "Home":
     )
 
 elif page == "Dataset":
-    st.header("Dataset")
-    st.write("This page will display dataset summary information from the FastAPI backend.")
+    st.header("Dataset Summary")
+
+    summary = get_api_data("/dataset-summary")
+
+    if summary:
+        col1, col2 = st.columns(2)
+
+        col1.metric("Rows", f"{summary['rows']:,}")
+        col2.metric("Columns", summary["columns"])
+
+        st.subheader("Columns")
+        st.write(summary["column_names"])
 
 elif page == "Sales KPIs":
     st.header("Sales KPIs")
-    st.write("This page will display global sales indicators.")
+
+    kpis = get_api_data("/sales-kpis")
+
+    if kpis:
+        col1, col2, col3 = st.columns(3)
+        col4, col5, col6 = st.columns(3)
+
+        col1.metric("Total Revenue", f"{kpis['total_revenue']:,.2f}")
+        col2.metric("Invoices", f"{kpis['total_invoices']:,}")
+        col3.metric("Customers", f"{kpis['total_customers']:,}")
+        col4.metric("Products", f"{kpis['total_products']:,}")
+        col5.metric("Countries", f"{kpis['total_countries']:,}")
+        col6.metric("Average Basket", f"{kpis['average_basket']:,.2f}")
 
 elif page == "Products":
-    st.header("Products")
-    st.write("This page will display top products by revenue and quantity.")
+    st.header("Top Products")
+
+    products = get_api_data("/top-products?limit=10")
+
+    if products:
+        products_df = pd.DataFrame(products)
+
+        st.subheader("Top 10 Products by Revenue")
+        st.dataframe(products_df, use_container_width=True)
+
+        st.bar_chart(
+            products_df.set_index("Description")["total_revenue"]
+        )
+
 
 elif page == "Customers":
     st.header("Customers")
@@ -68,11 +113,37 @@ elif page == "Customers":
 
 elif page == "RFM Segments":
     st.header("RFM Segments")
-    st.write("This page will display RFM customer segments.")
+
+    segments = get_api_data("/rfm-segments")
+
+    if segments:
+        segments_df = pd.DataFrame(segments)
+
+        st.subheader("Customers by Segment")
+        st.dataframe(segments_df, use_container_width=True)
+
+        st.bar_chart(
+            segments_df.set_index("segment")["customer_count"]
+        )
 
 elif page == "Architecture":
     st.header("Architecture")
+
     st.write(
-        "The project is organized into a data pipeline, machine learning modules, "
-        "FastAPI backend and Streamlit frontend."
+        "The project separates data processing, machine learning, API delivery and user interface."
+    )
+
+    st.code(
+        """
+data/raw
+   ↓
+data/processed
+   ↓
+src/analysis + src/ml
+   ↓
+backend FastAPI
+   ↓
+frontend Streamlit
+        """,
+        language="text",
     )
