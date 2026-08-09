@@ -413,3 +413,47 @@ L'endpoint `/health` retourne :
   "service": "smart-retail-ai-analyst-api",
   "version": "0.1.0"
 }
+
+## 2026-08-09 - Tâche 5.2
+
+### Objectif
+
+Créer les endpoints FastAPI pour exposer les principaux résultats data du projet.
+
+### Ce que j'ai appris
+
+J'ai appris qu'une API permet de rendre les résultats accessibles à d'autres applications. Les scripts créent les fichiers de données, tandis que l'API lit ces fichiers et les retourne en JSON.
+
+J'ai aussi appris à utiliser des paramètres de requête avec `Query`, comme `limit`, pour contrôler le nombre de résultats retournés.
+
+### Ce que j'ai codé
+
+J'ai modifié `backend/main.py`.
+
+Les endpoints créés sont :
+- `GET /dataset-summary`
+- `GET /sales-kpis`
+- `GET /top-products`
+- `GET /top-countries`
+- `GET /rfm-segments`
+
+J'ai ajouté une fonction `load_csv` pour lire les fichiers CSV et retourner une erreur claire si un fichier est manquant.
+
+J'ai aussi limité le paramètre `limit` entre 1 et 50 avec `Query`.
+
+### Erreurs rencontrées
+
+L'endpoint `/dataset-summary` retournait une erreur `500 Internal Server Error`.
+
+La cause était une erreur de lecture CSV :
+`Expected 9 fields in line 111, saw 10`.
+
+### Solution
+
+Certaines descriptions produits contiennent des virgules, comme `"AIRLINE LOUNGE,METAL SIGN"`. Le CSV contenait aussi des espaces après les séparateurs.
+
+J'ai corrigé la lecture CSV avec :
+
+```python
+df = pd.read_csv(path, skipinitialspace=True)
+df.columns = df.columns.str.strip()
