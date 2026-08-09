@@ -457,3 +457,41 @@ J'ai corrigé la lecture CSV avec :
 ```python
 df = pd.read_csv(path, skipinitialspace=True)
 df.columns = df.columns.str.strip()
+
+
+## 2026-08-09 - Tâche 6.1
+
+### Objectif
+
+Créer la première interface utilisateur Streamlit du projet.
+
+### Ce que j'ai appris
+
+J'ai appris que Streamlit permet de créer une interface web en Python. J'ai compris que FastAPI sert de backend pour fournir les données, tandis que Streamlit sert de frontend pour les afficher à l'utilisateur.
+
+J'ai aussi appris qu'il faut lancer FastAPI et Streamlit dans deux terminaux différents lorsque l'interface appelle l'API.
+
+### Ce que j'ai codé
+
+J'ai créé `frontend/app.py`.
+
+L'application contient :
+- une configuration de page Streamlit ;
+- un menu latéral ;
+- plusieurs vues de base : Home, Dataset, Sales KPIs, Products, Customers, RFM Segments et Architecture ;
+- une vérification simple de connexion au backend via `GET /health`.
+
+### Erreurs rencontrées
+
+Streamlit a demandé une adresse email au premier lancement. Ce champ n'est pas obligatoire et peut être laissé vide.
+
+### Solution
+
+J'ai appuyé sur Entrée sans saisir d'email pour continuer.
+
+### Résultats
+
+L'application Streamlit démarre avec :
+
+```powershell
+streamlit run frontend\app.py
