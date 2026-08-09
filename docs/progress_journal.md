@@ -529,3 +529,29 @@ Aucune erreur bloquante pour l'instant.
 ### Solution
 
 Les données sont récupérées depuis FastAPI avec `requests.get`,
+
+## 2026-08-09 - Tâche 7.1
+
+### Objectif
+
+Créer des documents métier pour préparer le futur module RAG.
+
+### Ce que j'ai appris
+
+J'ai appris qu'un RAG a besoin de documents pour répondre à des questions avec du contexte. Comme le dataset Online Retail ne contient pas de documents textuels, j'ai créé des documents synthétiques liés au projet.
+
+J'ai aussi compris que ces documents servent à la fois à documenter le projet et à fournir une base de connaissance au futur assistant IA.
+
+### Ce que j'ai créé
+
+J'ai créé les fichiers suivants dans `data/documents/` :
+- `business_context.md`
+- `rfm_methodology.md`
+- `customer_segments_guide.md`
+- `project_faq.md`
+
+Les documents sont écrits en français pour faciliter la compréhension pendant l'apprentissage.
+
+### Erreurs rencontrées
+
+Au début, les documents étaient proposés en anglais. J'ai décidé de les écrire en français pour mieux comprendre les concepts
