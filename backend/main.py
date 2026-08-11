@@ -2,12 +2,15 @@ from pathlib import Path
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
+from pydantic import BaseModel, Field
 
 from src.analysis.kpis import calculate_global_kpis
 from src.analysis.top_products_countries import (
     calculate_top_countries_by_revenue,
     calculate_top_products_by_revenue,
 )
+from src.rag.local_rag import answer_question, search_documents
+
 
 app = FastAPI(
     title="Smart Retail AI Analyst API",
@@ -17,6 +20,13 @@ app = FastAPI(
 
 CLEAN_DATA_PATH = Path("data/processed/online_retail_clean.csv")
 RFM_DATA_PATH = Path("data/processed/customer_rfm.csv")
+
+
+
+class ChatDocsRequest(BaseModel):
+    question: str = Field(..., min_length=3)
+    top_k: int = Field(default=3, ge=1, le=5)
+
 
 
 def load_csv(path: Path) -> pd.DataFrame:
@@ -100,3 +110,22 @@ def rfm_segments() -> list[dict]:
     segment_counts.columns = ["segment", "customer_count"]
 
     return segment_counts.to_dict(orient="records")
+
+
+@app.post("/chat-docs")
+def chat_docs(request: ChatDocsRequest) -> dict:
+    try:
+        answer = answer_question(request.question, top_k=request.top_k)
+        sources = search_documents(request.question, top_k=request.top_k)
+
+        return {
+            "question": request.question,
+            "answer": answer,
+            "sources": sources,
+        }
+
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Document chat failed: {error}",
+        ) from error

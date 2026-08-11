@@ -30,6 +30,7 @@ page = st.sidebar.radio(
         "Products",
         "Customers",
         "RFM Segments",
+        "Chat Documents",
         "Architecture",
     ],
 )
@@ -125,6 +126,41 @@ elif page == "RFM Segments":
         st.bar_chart(
             segments_df.set_index("segment")["customer_count"]
         )
+
+elif page == "Chat Documents":
+    st.header("Chat Documents")
+
+    question = st.text_input(
+        "Ask a question about the project documents",
+        value="Pourquoi utiliser RFM ?",
+    )
+
+    top_k = st.slider("Number of document chunks", min_value=1, max_value=5, value=3)
+
+    if st.button("Search documents"):
+        try:
+            response = requests.post(
+                f"{API_BASE_URL}/chat-docs",
+                json={
+                    "question": question,
+                    "top_k": top_k,
+                },
+                timeout=30,
+            )
+            response.raise_for_status()
+            result = response.json()
+
+            st.subheader("Answer")
+            st.write(result["answer"])
+
+            st.subheader("Sources")
+            for source in result["sources"]:
+                st.markdown(f"**{source['source']} - chunk {source['chunk_index']}**")
+                st.write(source["text"])
+                st.caption(f"Distance: {source['distance']:.4f}")
+
+        except requests.exceptions.RequestException as error:
+            st.error(f"Document chat failed: {error}")
 
 elif page == "Architecture":
     st.header("Architecture")

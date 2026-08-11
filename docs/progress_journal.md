@@ -600,3 +600,52 @@ J'ai aussi ajouté data/processed/chroma_db/ dans .gitignore pour ne pas envoyer
 Le pipeline local peut répondre à une question comme :
 python src\rag\local_rag.py "Pourquoi utiliser RFM ?"
 Il retourne les passages les plus pertinents depuis les documents métier.
+
+## 2026-08-11 - Tâche 8.1
+
+### Objectif
+
+Créer un endpoint `/chat-docs` pour interroger les documents métier du projet via l'API FastAPI.
+
+### Ce que j'ai appris
+
+J'ai appris la différence entre `GET` et `POST`. Pour `/chat-docs`, on utilise `POST` parce que l'utilisateur envoie une question dans le corps de la requête.
+
+J'ai aussi appris que Pydantic permet de valider les données envoyées à l'API avec `BaseModel` et `Field`.
+
+### Ce que j'ai codé
+
+J'ai modifié `backend/main.py`.
+
+J'ai ajouté :
+- le modèle `ChatDocsRequest`
+- l'endpoint `POST /chat-docs`
+- l'appel au RAG local avec `answer_question`
+- le retour des sources avec `search_documents`
+
+J'ai aussi modifié `frontend/app.py` pour ajouter une page `Chat Documents`.
+
+Cette page permet :
+- de saisir une question ;
+- de choisir le nombre de chunks ;
+- d'envoyer la question à FastAPI ;
+- d'afficher la réponse et les sources.
+
+### Erreurs rencontrées
+
+Aucune erreur bloquante pour l'instant.
+
+### Solution
+
+Le système utilise la base ChromaDB locale créée par `src/rag/local_rag.py`.
+
+### Résultats
+
+L'endpoint `/chat-docs` peut recevoir une requête comme :
+
+```json
+{
+  "question": "Pourquoi utiliser RFM ?",
+  "top_k": 3
+}
+
