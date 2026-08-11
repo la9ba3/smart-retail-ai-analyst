@@ -555,3 +555,48 @@ Les documents sont écrits en français pour faciliter la compréhension pendant
 ### Erreurs rencontrées
 
 Au début, les documents étaient proposés en anglais. J'ai décidé de les écrire en français pour mieux comprendre les concepts
+
+## 2026-08-11 - Tâche 7.2
+
+### Objectif
+
+Créer un pipeline RAG local pour rechercher des passages pertinents dans les documents métier du projet.
+
+### Ce que j'ai appris
+
+J'ai appris qu'un RAG se compose de plusieurs étapes : documents, chunks, embeddings, base vectorielle, recherche et réponse.
+
+J'ai compris qu'un embedding transforme un texte en vecteur numérique, et que ChromaDB compare ces vecteurs pour retrouver les passages les plus proches d'une question.
+
+J'ai aussi appris que dans cette tâche, on construit d'abord la partie retrieval du RAG, sans encore brancher un LLM externe.
+
+### Ce que j'ai codé
+
+J'ai créé `src/rag/local_rag.py`.
+
+Le script :
+- charge les fichiers Markdown depuis `data/documents/`
+- découpe les documents en chunks
+- crée des embeddings avec `sentence-transformers/all-MiniLM-L6-v2`
+- stocke les chunks et embeddings dans ChromaDB
+- recherche les passages pertinents à partir d'une question
+- retourne une réponse simple avec les sources trouvées
+- permet de poser une question depuis PowerShell avec `sys.argv`
+
+### Erreurs rencontrées
+
+J'ai fait une faute dans le nom du package `sentence-transformers` lors de l'installation.
+
+### Solution
+
+J'ai corrigé la commande d'installation avec :
+
+```powershell
+pip install chromadb sentence-transformers
+J'ai aussi ajouté data/processed/chroma_db/ dans .gitignore pour ne pas envoyer la base vectorielle locale sur GitHub.
+
+### Résultats
+
+Le pipeline local peut répondre à une question comme :
+python src\rag\local_rag.py "Pourquoi utiliser RFM ?"
+Il retourne les passages les plus pertinents depuis les documents métier.
