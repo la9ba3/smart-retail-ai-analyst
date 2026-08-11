@@ -649,3 +649,49 @@ L'endpoint `/chat-docs` peut recevoir une requête comme :
   "top_k": 3
 }
 
+## 2026-08-11 - Tâche 8.2
+
+### Objectif
+
+Créer un module de chat data simple pour répondre à des questions prédéfinies sur les résultats du projet.
+
+### Ce que j'ai appris
+
+J'ai appris qu'un chat data simple peut fonctionner avec une détection d'intention par mots-clés. Cette approche ne comprend pas toutes les formulations possibles, mais elle permet de créer une première interaction utile sans LLM.
+
+J'ai aussi appris à exposer cette logique via un endpoint FastAPI `POST /chat-data` et à l'appeler depuis Streamlit.
+
+### Ce que j'ai codé
+
+J'ai créé `src/analysis/simple_data_chat.py`.
+
+Le module peut répondre aux questions sur :
+- le chiffre d'affaires ;
+- les top produits ;
+- les top pays ;
+- le nombre de clients ;
+- les segments RFM.
+
+J'ai modifié `backend/main.py` pour ajouter :
+- `ChatDataRequest`
+- `POST /chat-data`
+
+J'ai modifié `frontend/app.py` pour ajouter une page `Chat Data`.
+
+### Erreurs rencontrées
+
+Aucune erreur bloquante pour l'instant.
+
+### Solution
+
+La fonction `detect_intent` utilise des mots-clés pour router la question vers la bonne fonction d'analyse.
+
+### Résultats
+
+L'utilisateur peut poser une question simple depuis Streamlit, et l'application retourne :
+- l'intention détectée ;
+- une réponse textuelle basée sur les données préparées.
+
+### Prochaine étape
+
+Valider la tâche 8.2 avant de passer à Docker.

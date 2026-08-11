@@ -31,6 +31,7 @@ page = st.sidebar.radio(
         "Customers",
         "RFM Segments",
         "Chat Documents",
+        "Chat Data",
         "Architecture",
     ],
 )
@@ -161,6 +162,39 @@ elif page == "Chat Documents":
 
         except requests.exceptions.RequestException as error:
             st.error(f"Document chat failed: {error}")
+
+
+elif page == "Chat Data":
+    st.header("Chat Data")
+
+    question = st.text_input(
+        "Ask a question about sales, products, countries, customers or segments",
+        value="Quel est le chiffre d'affaires total ?",
+    )
+
+    if st.button("Ask data question"):
+        try:
+            response = requests.post(
+                f"{API_BASE_URL}/chat-data",
+                json={
+                    "question": question,
+                },
+                timeout=30,
+            )
+            response.raise_for_status()
+            result = response.json()
+
+            st.subheader("Detected Intent")
+            st.write(result["intent"])
+
+            st.subheader("Answer")
+            st.write(result["answer"])
+
+        except requests.exceptions.RequestException as error:
+            st.error(f"Data chat failed: {error}")
+
+
+
 
 elif page == "Architecture":
     st.header("Architecture")

@@ -10,7 +10,7 @@ from src.analysis.top_products_countries import (
     calculate_top_products_by_revenue,
 )
 from src.rag.local_rag import answer_question, search_documents
-
+from src.analysis.simple_data_chat import answer_data_question
 
 app = FastAPI(
     title="Smart Retail AI Analyst API",
@@ -27,7 +27,8 @@ class ChatDocsRequest(BaseModel):
     question: str = Field(..., min_length=3)
     top_k: int = Field(default=3, ge=1, le=5)
 
-
+class ChatDataRequest(BaseModel):
+    question: str = Field(..., min_length=3)
 
 def load_csv(path: Path) -> pd.DataFrame:
     if not path.exists():
@@ -128,4 +129,15 @@ def chat_docs(request: ChatDocsRequest) -> dict:
         raise HTTPException(
             status_code=500,
             detail=f"Document chat failed: {error}",
+        ) from error
+
+@app.post("/chat-data")
+def chat_data(request: ChatDataRequest) -> dict:
+    try:
+        return answer_data_question(request.question)
+
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Data chat failed: {error}",
         ) from error
