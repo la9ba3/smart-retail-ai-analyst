@@ -39,23 +39,33 @@ def generate_answer_with_mistral(question: str, top_k: int = 3) -> dict:
     client = get_mistral_client()
 
     system_prompt = (
-        "Tu es un assistant data et retail pour le projet Smart Retail AI Analyst. "
-        "Réponds en français, simplement, avec un ton pédagogique. "
-        "Utilise uniquement le contexte fourni. "
-        "Si le contexte ne contient pas la réponse, dis clairement que les documents ne suffisent pas."
-    )
+        "Tu es un assistant data spécialisé en retail et analyse client. "
+        "Tu réponds en français, de manière claire, structurée et pédagogique. "
+        "Tu dois utiliser uniquement le contexte fourni. "
+        "Si le contexte ne contient pas assez d'information pour répondre, dis-le clairement. "
+        "N'invente pas de chiffres, de résultats ou de sources. "
+        "Quand tu utilises une source, cite-la avec le format [nom_du_fichier - chunk X]."
+)
 
     user_prompt = f"""
-Question utilisateur :
-{question}
+    Question utilisateur :
+    {question}
 
-Contexte documentaire :
-{context}
+    Contexte disponible :
+    {context}
 
-Réponds avec :
-1. une réponse courte et claire ;
-2. les points clés ;
-3. les sources utilisées.
+    Réponds avec exactement ces sections :
+
+    ### Réponse
+    Donne une réponse courte, claire et directement liée à la question.
+
+    ### Points clés
+    - Donne les idées importantes.
+    - Reste basé uniquement sur le contexte fourni.
+    - Ne rajoute pas d'information externe non présente dans les documents.
+
+    ### Sources utilisées
+    - Cite uniquement les sources réellement utiles avec le format [source - chunk X].
 """
 
     response = client.chat.complete(

@@ -35,45 +35,6 @@ La colonne `TotalPrice` est calculée avec :
 
 ```text
 TotalPrice = Quantity * UnitPrice
-Voici le fichier complet prêt à copier dans :
-notepad data\documents\project_faq.md
-# FAQ Du Projet
-
-## Quel Est L'Objectif Du Projet ?
-
-L'objectif du projet Smart Retail AI Analyst est de construire une application complète d'analyse retail.
-
-Le projet combine :
-- nettoyage de données ;
-- analyse exploratoire ;
-- segmentation client ;
-- API FastAPI ;
-- interface Streamlit ;
-- futur module RAG ;
-- préparation au déploiement cloud.
-
-## Quel Dataset Est Utilisé ?
-
-Le projet utilise le dataset Online Retail du UCI Machine Learning Repository.
-
-Ce dataset contient des transactions d'une entreprise de vente en ligne.
-
-## Pourquoi Nettoyer Le Dataset ?
-
-Le nettoyage est nécessaire parce que le dataset contient :
-- des clients sans `CustomerID` ;
-- des quantités négatives ou nulles ;
-- des prix unitaires invalides ;
-- des factures annulées.
-
-Ces lignes peuvent fausser les analyses business.
-
-## Pourquoi Créer `TotalPrice` ?
-
-La colonne `TotalPrice` est calculée avec :
-
-```text
-TotalPrice = Quantity * UnitPrice
 Elle permet de mesurer le chiffre d'affaires généré par chaque ligne de facture.
 
 ## Pourquoi Utiliser RFM ?

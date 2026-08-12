@@ -783,3 +783,27 @@ J'ai rencontré l'erreur :
 
 ```text
 AttributeError: 'Langfuse' object has no attribute 'update_current_trace'
+
+
+## Tâche 8.5 - Amélioration Et Comparaison De La Qualité Du RAG
+
+### Ce Qui A Été Fait
+- Création d'un petit script d'évaluation RAG avec des questions de test fixes.
+- Évaluation du comportement de base du RAG avec `top_k=3`.
+- Nettoyage du fichier `project_faq.md` après détection de texte parasite dans les traces LangFuse.
+- Réindexation de la base documentaire locale ChromaDB.
+- Amélioration du prompt Mistral RAG pour produire des réponses plus claires et citer les sources.
+- Comparaison de `top_k=3` et `top_k=5` avec les traces LangFuse.
+
+### Observations Principales
+- Le nettoyage de la documentation a amélioré la qualité de récupération des documents.
+- Le prompt amélioré produit des réponses plus structurées.
+- Les citations de sources sont plus claires avec le format `[fichier - chunk X]`.
+- `top_k=3` produit des réponses plus ciblées que `top_k=5`.
+- `top_k=5` ajoute plus de contexte, mais peut aussi ajouter du bruit.
+
+### Décision
+Le projet garde `top_k=3` comme valeur par défaut pour la récupération documentaire du RAG.
+
+### Statut
+Validé manuellement avec les exports LangFuse et les tests dans le terminal.
