@@ -5,6 +5,7 @@ from mistralai.client import Mistral
 
 from src.rag.local_rag import search_documents
 
+from langfuse import get_client, observe
 
 load_dotenv()
 
@@ -29,7 +30,7 @@ def build_context(sources: list[dict]) -> str:
 
     return "\n\n---\n\n".join(context_parts)
 
-
+@observe(name="mistral-rag-answer")
 def generate_answer_with_mistral(question: str, top_k: int = 3) -> dict:
     sources = search_documents(question, top_k=top_k)
     context = build_context(sources)
@@ -75,6 +76,23 @@ Réponds avec :
 
     answer = response.choices[0].message.content
 
+    langfuse = get_client()
+    langfuse.update_current_span(
+        metadata={
+            "model": model,
+            "top_k": top_k,
+            "sources": [
+                {
+                    "source": source["source"],
+                    "chunk_index": source["chunk_index"],
+                    "distance": source["distance"],
+                }
+                for source in sources
+            ],
+        }
+    )
+
+    
     return {
         "question": question,
         "answer": answer,

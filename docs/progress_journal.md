@@ -749,3 +749,37 @@ L'endpoint POST /chat-docs utilise maintenant :
 - ChromaDB pour retrouver les passages pertinents ;
 - Mistral API pour générer une réponse naturelle ;
 - les sources documentaires pour garder la réponse traçable.
+
+
+
+## 2026-08-12 - Tâche 8.4
+
+### Objectif
+
+Ajouter LangFuse pour tracer et observer les appels RAG avec Mistral.
+
+### Ce que j'ai appris
+
+J'ai appris que LangFuse sert à observer les applications LLM. Il permet de tracer les questions utilisateurs, les réponses générées, les métadonnées, les sources utilisées, les erreurs et les temps d'exécution.
+
+J'ai compris la différence entre LangChain et LangFuse :
+- LangChain aide à construire des workflows LLM ;
+- LangFuse aide à observer, débugger et améliorer ces workflows.
+
+### Ce que j'ai codé
+
+J'ai modifié `src/rag/mistral_rag.py`.
+
+J'ai ajouté :
+- le décorateur `@observe`
+- le client LangFuse avec `get_client`
+- des métadonnées sur le modèle, `top_k` et les sources utilisées
+
+J'ai aussi ajouté les variables LangFuse dans `.env.example`.
+
+### Erreurs rencontrées
+
+J'ai rencontré l'erreur :
+
+```text
+AttributeError: 'Langfuse' object has no attribute 'update_current_trace'
