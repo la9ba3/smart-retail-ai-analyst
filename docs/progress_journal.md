@@ -693,5 +693,59 @@ L'utilisateur peut poser une question simple depuis Streamlit, et l'application 
 - une réponse textuelle basée sur les données préparées.
 
 ### Prochaine étape
+## 2026-08-12 - Tâche 8.3
 
-Valider la tâche 8.2 avant de passer à Docker.
+### Objectif
+
+Intégrer Mistral API au pipeline RAG pour générer des réponses naturelles à partir des documents métier.
+
+### Ce que j'ai appris
+
+J'ai appris la différence entre un RAG local qui retrouve des passages et un RAG génératif qui utilise un LLM externe pour rédiger une réponse.
+
+J'ai compris que Mistral reçoit la question utilisateur et les passages retrouvés par ChromaDB, puis génère une réponse synthétique basée sur ce contexte.
+
+J'ai aussi appris à stocker une clé API dans `.env` et à documenter les variables nécessaires dans `.env.example` sans exposer de secret.
+
+### Ce que j'ai codé
+
+J'ai créé `src/rag/mistral_rag.py`.
+
+Le module :
+- charge les variables d'environnement avec `load_dotenv`
+- lit `MISTRAL_API_KEY` et `MISTRAL_MODEL`
+- recherche les documents pertinents avec `search_documents`
+- construit un contexte documentaire
+- appelle Mistral API
+- retourne une réponse générée avec les sources utilisées
+
+J'ai modifié `backend/main.py` pour utiliser `generate_answer_with_mistral` dans l'endpoint `POST /chat-docs`.
+
+J'ai aussi ajouté une vérification de configuration pour retourner une erreur claire si `MISTRAL_API_KEY` manque.
+
+### Erreurs rencontrées
+
+J'ai rencontré une erreur d'import du SDK Mistral, puis une erreur `ModuleNotFoundError: No module named 'src'` lors du lancement direct du fichier.
+
+J'ai aussi rencontré une erreur `401 Invalid API Key`, liée à la clé API Mistral.
+
+### Solution
+
+J'ai corrigé l'import Mistral selon la version du SDK installée.
+
+J'ai lancé le module avec :
+
+```powershell
+python -m src.rag.mistral_rag
+
+au lieu de lancer directement le fichier.
+J'ai vérifié la variable MISTRAL_API_KEY dans .env et corrigé la clé.
+
+## Résultats
+
+
+L'endpoint POST /chat-docs utilise maintenant :
+
+- ChromaDB pour retrouver les passages pertinents ;
+- Mistral API pour générer une réponse naturelle ;
+- les sources documentaires pour garder la réponse traçable.

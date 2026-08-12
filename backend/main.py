@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
@@ -11,6 +12,10 @@ from src.analysis.top_products_countries import (
 )
 from src.rag.local_rag import answer_question, search_documents
 from src.analysis.simple_data_chat import answer_data_question
+from src.rag.mistral_rag import generate_answer_with_mistral
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI(
     title="Smart Retail AI Analyst API",
@@ -115,15 +120,17 @@ def rfm_segments() -> list[dict]:
 
 @app.post("/chat-docs")
 def chat_docs(request: ChatDocsRequest) -> dict:
-    try:
-        answer = answer_question(request.question, top_k=request.top_k)
-        sources = search_documents(request.question, top_k=request.top_k)
+    if not os.getenv("MISTRAL_API_KEY"):
+        raise HTTPException(
+            status_code=503,
+            detail="MISTRAL_API_KEY is missing. Please configure the backend environment.",
+        )
 
-        return {
-            "question": request.question,
-            "answer": answer,
-            "sources": sources,
-        }
+    try:
+        return generate_answer_with_mistral(
+            question=request.question,
+            top_k=request.top_k,
+        )
 
     except Exception as error:
         raise HTTPException(
@@ -131,6 +138,8 @@ def chat_docs(request: ChatDocsRequest) -> dict:
             detail=f"Document chat failed: {error}",
         ) from error
 
+
+    
 @app.post("/chat-data")
 def chat_data(request: ChatDataRequest) -> dict:
     try:
