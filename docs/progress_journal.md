@@ -807,3 +807,47 @@ Le projet garde `top_k=3` comme valeur par défaut pour la récupération docume
 
 ### Statut
 Validé manuellement avec les exports LangFuse et les tests dans le terminal.
+
+## Tâche 9.1 - Dockerisation Du Backend FastAPI
+
+### Objectif
+Créer une image Docker capable de lancer le backend FastAPI du projet Smart Retail AI Analyst.
+
+### Ce Qui A Été Fait
+- Création d'un fichier `requirements-backend.txt` avec uniquement les dépendances nécessaires au backend.
+- Création du fichier `docker/backend.Dockerfile`.
+- Création ou correction du fichier `.dockerignore`.
+- Construction de l'image Docker `smart-retail-backend`.
+- Lancement du backend avec Docker.
+- Test de l'endpoint `/health`.
+- Test de l'endpoint `/dataset-summary`.
+- Test de l'endpoint `/chat-docs` avec Mistral et le RAG.
+- Vérification des traces LangFuse depuis Docker.
+
+### Ce Que J'ai Appris
+- Une image Docker est une recette construite à partir d'un Dockerfile.
+- Un conteneur est une image en cours d'exécution.
+- Le port `8000:8000` relie le port de mon PC au port du conteneur.
+- Le fichier `.env` permet de transmettre les clés API au conteneur sans les copier dans l'image.
+- Le fichier `.dockerignore` évite de copier des fichiers inutiles ou sensibles.
+- Docker Desktop permet de voir les conteneurs, images, volumes et logs.
+
+### Erreurs Rencontrées
+- Le premier build Docker était trop lourd ou problématique avec le fichier `requirements.txt` complet.
+- Le fichier `.env` contenait des espaces autour du signe `=`, ce qui empêchait Docker de lire les variables.
+- Les URLs LangFuse avaient encore des guillemets, ce qui empêchait l'export correct des traces.
+- Le fichier `.dockerignore` ignorait `data/processed`, alors que le backend en avait besoin.
+
+### Solutions
+- Création d'un fichier `requirements-backend.txt` plus adapté au backend.
+- Correction du fichier `.env` sans espaces autour de `=`.
+- Suppression des guillemets autour des variables LangFuse.
+- Conservation de `data/processed` dans l'image Docker.
+- Test complet du backend avec `/health`, `/dataset-summary` et `/chat-docs`.
+
+### Résultat
+Le backend FastAPI fonctionne correctement dans Docker.
+Il peut lire les données traitées, appeler Mistral, utiliser le RAG et envoyer les traces vers LangFuse.
+
+### Statut
+Validé manuellement avec Docker, FastAPI Swagger et LangFuse.
