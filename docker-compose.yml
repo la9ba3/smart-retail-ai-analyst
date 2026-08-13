@@ -1,0 +1,11 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    image: smart-retail-backend
+    container_name: smart-retail-backend
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"

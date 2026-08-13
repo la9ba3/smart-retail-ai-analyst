@@ -851,3 +851,34 @@ Il peut lire les données traitées, appeler Mistral, utiliser le RAG et envoyer
 
 ### Statut
 Validé manuellement avec Docker, FastAPI Swagger et LangFuse.
+
+
+## Tâche 9.2 - Docker Compose Backend
+
+### Objectif
+Ajouter Docker Compose pour lancer le backend FastAPI plus simplement avec un fichier de configuration.
+
+### Ce Qui A Été Fait
+- Création du fichier `docker-compose.yml`.
+- Définition d'un service `backend`.
+- Réutilisation du Dockerfile `docker/backend.Dockerfile`.
+- Chargement des variables d'environnement depuis `.env`.
+- Exposition du port `8000`.
+- Lancement du backend avec `docker compose up --build`.
+- Test de `/health`, `/docs`, `/dataset-summary` et `/chat-docs`.
+- Vérification du fonctionnement avec Mistral, RAG et LangFuse.
+
+### Ce Que J'ai Appris
+- Docker Compose permet de lancer un ou plusieurs conteneurs avec un seul fichier.
+- `docker-compose.yml` décrit les services de l'application.
+- `build.context` indique le dossier utilisé pour construire l'image.
+- `dockerfile` indique quel Dockerfile utiliser.
+- `env_file` permet de charger les variables du fichier `.env`.
+- `ports` relie un port de mon PC à un port du conteneur.
+- `docker compose down` arrête et supprime les conteneurs créés par Compose.
+
+### Résultat
+Le backend FastAPI peut maintenant être lancé avec Docker Compose.
+
+### Statut
+Validé manuellement avec Swagger, les endpoints API, Mistral RAG et LangFuse.
