@@ -1054,3 +1054,39 @@ Le RAG peut appeler Mistral et envoyer des traces vers LangFuse depuis Cloud Run
 ## Statut
 
 Validé manuellement avec Cloud Run, Swagger, endpoints API, logs GCP, Mistral et LangFuse.
+
+## Tâche 11.1 - Tests Unitaires
+
+### Objectif
+Ajouter des tests automatiques simples pour vérifier les fonctions principales du projet.
+
+### Ce Qui A Été Fait
+- Installation de `pytest`.
+- Mise à jour du fichier `requirements.txt`.
+- Création du fichier `pytest.ini`.
+- Création d'un test pour les KPIs globaux.
+- Création de tests pour les tops produits et pays.
+- Création d'un test pour l'endpoint FastAPI `/health`.
+- Exécution de la suite de tests avec `pytest`.
+
+### Ce Que J'ai Appris
+- Un test unitaire vérifie automatiquement une petite partie du code.
+- `pytest` permet de lancer les tests Python.
+- `assert` sert à vérifier qu'un résultat correspond à ce qui est attendu.
+- Les petits DataFrames fictifs rendent les tests simples à comprendre.
+- `TestClient` permet de tester une route FastAPI sans lancer Uvicorn.
+- `pytest.ini` permet à pytest de trouver le dossier `src`.
+
+### Erreur Rencontrée
+Au premier lancement, pytest ne trouvait pas le module `src` :
+
+```text
+ModuleNotFoundError: No module named 'src'
+## Solution
+Création du fichier pytest.ini avec :
+[pytest]
+pythonpath = .
+testpaths = tests
+## Résultat
+Les premiers tests unitaires du projet sont en place.
+Ils vérifient les KPIs, les analyses top produits/pays et l'endpoint /health.
