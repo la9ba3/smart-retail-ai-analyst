@@ -916,3 +916,89 @@ L'image Docker du backend est disponible dans Artifact Registry.
 
 ### Statut
 Validé manuellement avec Google Cloud CLI, Docker et Artifact Registry.
+
+## Observation - BigQuery Schema
+
+Lors du chargement du fichier `online_retail_clean.csv` dans BigQuery, certaines colonnes ont été importées avec des espaces dans leur nom, par exemple :
+
+- ` Country `
+- ` TotalPrice `
+
+Cela oblige à utiliser des backticks dans les requêtes SQL :
+
+```sql
+SELECT
+  ` Country `,
+  ROUND(SUM(` TotalPrice `), 2) AS total_revenue
+FROM `smart-retail-ai-analyst.smart_retail.online_retail_clean`
+GROUP BY ` Country `
+ORDER BY total_revenue DESC
+LIMIT 10;
+
+La requête fonctionne, mais le schéma BigQuery n'est pas parfaitement propre.
+Amélioration possible plus tard : nettoyer les noms de colonnes avant l'export CSV avec :
+df.columns = df.columns.str.strip()
+
+Pourquoi on note ça ?
+
+Parce que c’est une vraie observation d’ingénieur data :
+
+```text
+les données fonctionnent
+mais le schéma peut être amélioré
+
+## Tâche 10.2 - Cloud Storage Et BigQuery
+
+### Objectif
+Préparer une première intégration data sur Google Cloud avec Cloud Storage et BigQuery.
+
+### Ce Qui A Été Fait
+- Activation des APIs Cloud Storage et BigQuery.
+- Création d'un bucket Cloud Storage `smart-retail-ai-analyst-data`.
+- Envoi du fichier `online_retail_clean.csv` vers le bucket.
+- Création du dataset BigQuery `smart_retail`.
+- Chargement du fichier CSV dans la table `online_retail_clean`.
+- Vérification du nombre de lignes dans BigQuery.
+- Exécution d'une requête business sur le chiffre d'affaires par pays.
+- Exécution d'une requête business sur le chiffre d'affaires mensuel.
+- Exécution d'une requête business sur les meilleurs clients.
+
+### Ce Que J'ai Appris
+- Cloud Storage sert à stocker des fichiers dans GCP.
+- Un bucket est un espace de stockage cloud pour les fichiers.
+- BigQuery sert à analyser des données sous forme de tables avec SQL.
+- Un dataset BigQuery est un regroupement de tables.
+- Une table BigQuery peut être créée à partir d'un CSV stocké dans Cloud Storage.
+- Les backticks sont nécessaires quand un nom de projet ou une colonne contient des caractères spéciaux.
+- Des espaces dans les noms de colonnes peuvent rendre les requêtes SQL moins propres.
+
+### Erreur Ou Observation
+Certaines colonnes ont été importées avec des espaces dans leur nom, par exemple :
+
+- ` Country `
+- ` TotalPrice `
+- ` InvoiceDate `
+- ` CustomerID `
+- ` InvoiceNo `
+
+Cela oblige à utiliser des backticks dans les requêtes SQL.
+
+Exemple :
+
+```sql
+SELECT
+  ` Country `,
+  ROUND(SUM(` TotalPrice `), 2) AS total_revenue
+FROM `smart-retail-ai-analyst.smart_retail.online_retail_clean`
+GROUP BY ` Country `
+ORDER BY total_revenue DESC
+LIMIT 10;
+
+## Amélioration Possible
+Nettoyer les noms de colonnes avant l'export CSV avec Python :
+df.columns = df.columns.str.strip()
+## Résultat
+Les données nettoyées sont maintenant disponibles dans Cloud Storage et BigQuery.
+BigQuery peut exécuter des requêtes analytiques sur les ventes, les pays, les mois et les clients.
+## Statut
+Validé manuellement avec Google Cloud CLI, Cloud Storage, BigQuery et requêtes SQL.
