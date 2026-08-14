@@ -1002,3 +1002,55 @@ Les données nettoyées sont maintenant disponibles dans Cloud Storage et BigQue
 BigQuery peut exécuter des requêtes analytiques sur les ventes, les pays, les mois et les clients.
 ## Statut
 Validé manuellement avec Google Cloud CLI, Cloud Storage, BigQuery et requêtes SQL.
+
+## Tâche 10.3 - Déploiement Du Backend Sur Cloud Run
+
+### Objectif
+Déployer le backend FastAPI dockerisé sur Google Cloud Run afin de rendre l'API accessible en ligne.
+
+### Ce Qui A Été Fait
+- Vérification de l'image Docker dans Artifact Registry.
+- Préparation des variables d'environnement nécessaires au backend.
+- Premier déploiement sur Cloud Run.
+- Analyse des logs après échec du premier démarrage.
+- Identification d'un problème de mémoire : la limite par défaut de 512 MiB était insuffisante.
+- Redéploiement avec `--memory 2Gi`, `--cpu 2` et `--timeout 300`.
+- Test de l'endpoint `/health` sur l'URL Cloud Run.
+- Test de la documentation Swagger `/docs`.
+- Test de l'endpoint `/dataset-summary`.
+- Test de l'endpoint `/chat-docs` avec Mistral, RAG et LangFuse.
+- Vérification des logs Cloud Run.
+
+### Ce Que J'ai Appris
+- Cloud Run lance une image Docker sur internet sans gérer de serveur.
+- Cloud Run récupère l'image depuis Artifact Registry.
+- Le port exposé par l'application doit correspondre au port configuré dans Cloud Run.
+- Les variables d'environnement sont nécessaires pour les clés Mistral et LangFuse.
+- Les logs Cloud Run permettent de diagnostiquer les erreurs de démarrage.
+- Les applications IA peuvent nécessiter plus de mémoire à cause de bibliothèques comme `sentence-transformers`, `torch` et `chromadb`.
+- Un code `200 OK` signifie que l'endpoint a répondu correctement.
+- Un `404` sur `/` ou `/favicon.ico` n'est pas grave si ces routes ne sont pas définies.
+
+### Erreur Rencontrée
+Le premier déploiement Cloud Run a échoué avec le message :
+
+```text
+Memory limit of 512 MiB exceeded
+
+Cloud Run utilisait la mémoire par défaut, insuffisante pour le backend RAG.
+
+## Solution
+
+Redéploiement avec plus de ressources :
+gcloud run deploy smart-retail-backend --image europe-west1-docker.pkg.dev/smart-retail-ai-analyst/smart-retail-repo/smart-retail-backend:latest --region europe-west1 --platform managed --allow-unauthenticated --port 8000 --memory 2Gi --cpu 2 
+--timeout 300 --env-vars-file .env
+
+## Résultat
+
+Le backend FastAPI est déployé avec succès sur Cloud Run.
+Les endpoints /health, /docs, /dataset-summary, /sales-kpis et /chat-docs fonctionnent en ligne.
+Le RAG peut appeler Mistral et envoyer des traces vers LangFuse depuis Cloud Run.
+
+## Statut
+
+Validé manuellement avec Cloud Run, Swagger, endpoints API, logs GCP, Mistral et LangFuse.
