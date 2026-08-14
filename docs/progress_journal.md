@@ -882,3 +882,37 @@ Le backend FastAPI peut maintenant être lancé avec Docker Compose.
 
 ### Statut
 Validé manuellement avec Swagger, les endpoints API, Mistral RAG et LangFuse.
+
+## Tâche 10.1 - Préparation De Google Cloud Platform
+
+### Objectif
+Préparer l'environnement Google Cloud Platform pour le futur déploiement du backend Docker sur Cloud Run.
+
+### Ce Qui A Été Fait
+- Installation de Google Cloud CLI.
+- Connexion au compte Google avec `gcloud auth login`.
+- Vérification du projet GCP `smart-retail-ai-analyst`.
+- Configuration du projet actif avec `gcloud config set project`.
+- Vérification de la facturation.
+- Configuration de la région Cloud Run `europe-west1`.
+- Activation des APIs nécessaires : Cloud Run, Artifact Registry et Cloud Build.
+- Création d'un dépôt Artifact Registry `smart-retail-repo`.
+- Configuration de Docker pour pousser vers Artifact Registry.
+- Tag de l'image Docker backend avec le nom complet Artifact Registry.
+- Push de l'image `smart-retail-backend` vers Artifact Registry.
+
+### Ce Que J'ai Appris
+- GCP est la plateforme cloud utilisée pour héberger l'application.
+- `gcloud` permet de gérer GCP depuis le terminal.
+- Un projet GCP regroupe les ressources cloud.
+- Cloud Run sert à exécuter une image Docker sur internet.
+- Artifact Registry sert à stocker les images Docker.
+- Une région GCP indique où les services seront hébergés.
+- Docker doit être configuré pour s'authentifier auprès d'Artifact Registry.
+
+### Résultat
+L'environnement GCP est prêt pour le futur déploiement du backend sur Cloud Run.
+L'image Docker du backend est disponible dans Artifact Registry.
+
+### Statut
+Validé manuellement avec Google Cloud CLI, Docker et Artifact Registry.
