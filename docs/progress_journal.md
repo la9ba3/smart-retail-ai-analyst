@@ -1161,3 +1161,35 @@ Le projet dispose maintenant d'un README clair, structuré et adapté à un port
 
 ### Statut
 Validé manuellement avec lecture du README et exécution des tests Pytest.
+
+## Tâche 12.2 - Démo Et CV
+
+### Objectif
+Préparer le projet Smart Retail AI Analyst pour une présentation portfolio, CV, LinkedIn et entretien.
+
+### Ce Qui A Été Fait
+- Création du fichier `docs/portfolio_summary.md`.
+- Ajout d'un pitch court du projet en anglais.
+- Ajout d'un pitch entretien en 30 secondes en anglais.
+- Ajout de bullet points pour le CV en anglais.
+- Ajout d'un brouillon de post LinkedIn en anglais.
+- Ajout d'un script de démo en anglais.
+- Ajout d'une liste de captures d'écran utiles.
+- Ajout des points techniques forts à mentionner.
+- Ajout des améliorations possibles à mentionner.
+- Ajout du lien GitHub du projet.
+- Ajout d'une version française avec pitch court, pitch entretien, points CV, post LinkedIn et script de démo.
+
+### Ce Que J'ai Appris
+- Un projet portfolio doit être techniquement solide, mais aussi facile à présenter.
+- Un pitch court permet d'expliquer rapidement la valeur du projet.
+- Les points CV doivent mettre en avant les actions concrètes et les technologies utilisées.
+- Un script de démo aide à présenter le projet avec un fil logique.
+- La version anglaise est utile pour GitHub et les recruteurs internationaux.
+- La version française est utile pour les entretiens ou communications francophones.
+
+### Résultat
+Le projet dispose maintenant d'un résumé portfolio prêt pour le CV, LinkedIn, GitHub et les entretiens.
+
+### Statut
+Validé manuellement par relecture du fichier `docs/portfolio_summary.md`.
