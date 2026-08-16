@@ -1126,3 +1126,38 @@ La gestion d'erreurs de `/chat-docs` et `/chat-data` est plus facile à diagnost
 
 ### Statut
 Validé manuellement avec FastAPI, pytest et Docker Compose.
+
+
+## Tâche 12.1 - README Professionnel
+
+### Objectif
+Transformer le README du projet en une page GitHub professionnelle et claire pour un portfolio data et IA.
+
+### Ce Qui A Été Fait
+- Réécriture complète du fichier `README.md`.
+- Présentation claire de l'objectif du projet.
+- Ajout de la stack technique.
+- Description du dataset Online Retail.
+- Description du pipeline data.
+- Description des analyses business.
+- Description de la segmentation RFM et KMeans.
+- Description du RAG avec ChromaDB, Mistral et LangFuse.
+- Description des endpoints FastAPI.
+- Description de Docker, Docker Compose et Cloud Run.
+- Description de Cloud Storage et BigQuery.
+- Description des tests Pytest.
+- Ajout des commandes d'installation, de lancement local, Docker et tests.
+- Correction de la mise en forme Markdown et remplacement de l'arborescence par une version ASCII propre.
+
+### Ce Que J'ai Appris
+- Le README est la vitrine principale d'un projet GitHub.
+- Un README professionnel doit expliquer le problème, les fonctionnalités, la stack et les commandes de lancement.
+- Il faut distinguer ce qui est déjà fait des améliorations futures.
+- La mise en forme Markdown est importante pour la lisibilité.
+- Les caractères spéciaux peuvent créer des problèmes d'encodage, donc une arborescence ASCII est plus sûre.
+
+### Résultat
+Le projet dispose maintenant d'un README clair, structuré et adapté à un portfolio GitHub.
+
+### Statut
+Validé manuellement avec lecture du README et exécution des tests Pytest.
