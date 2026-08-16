@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-
+import logging
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
@@ -14,6 +14,16 @@ from src.rag.local_rag import answer_question, search_documents
 from src.analysis.simple_data_chat import answer_data_question
 from src.rag.mistral_rag import generate_answer_with_mistral
 from dotenv import load_dotenv
+
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(levelname)s - %(name)s - %(message)s",
+)
+
+logger = logging.getLogger(__name__)
+
 
 load_dotenv()
 
@@ -36,7 +46,11 @@ class ChatDataRequest(BaseModel):
     question: str = Field(..., min_length=3)
 
 def load_csv(path: Path) -> pd.DataFrame:
+    logger.info("Loading CSV file: %s", path)
+
     if not path.exists():
+        logger.error("CSV file not found: %s", path)
+
         raise HTTPException(
             status_code=404,
             detail=f"File not found: {path}. Please run the data pipeline first.",
@@ -44,11 +58,14 @@ def load_csv(path: Path) -> pd.DataFrame:
 
     df = pd.read_csv(path, skipinitialspace=True)
     df.columns = df.columns.str.strip()
-    return df
 
+    logger.info("CSV loaded successfully: %s rows, %s columns", df.shape[0], df.shape[1])
+
+    return df
 
 @app.get("/health")
 def health_check() -> dict:
+    logger.info("Health check called")
     return {
         "status": "ok",
         "service": "smart-retail-ai-analyst-api",
@@ -117,35 +134,51 @@ def rfm_segments() -> list[dict]:
 
     return segment_counts.to_dict(orient="records")
 
-
 @app.post("/chat-docs")
 def chat_docs(request: ChatDocsRequest) -> dict:
+    logger.info("Document chat requested with top_k=%s", request.top_k)
+
     if not os.getenv("MISTRAL_API_KEY"):
+        logger.error("MISTRAL_API_KEY is missing")
+
         raise HTTPException(
             status_code=503,
             detail="MISTRAL_API_KEY is missing. Please configure the backend environment.",
         )
 
     try:
-        return generate_answer_with_mistral(
+        response = generate_answer_with_mistral(
             question=request.question,
             top_k=request.top_k,
         )
 
+        logger.info("Document chat completed successfully")
+
+        return response
+
     except Exception as error:
+        logger.exception("Document chat failed")
+
         raise HTTPException(
             status_code=500,
             detail=f"Document chat failed: {error}",
         ) from error
 
-
     
 @app.post("/chat-data")
 def chat_data(request: ChatDataRequest) -> dict:
+    logger.info("Data chat requested")
+
     try:
-        return answer_data_question(request.question)
+        response = answer_data_question(request.question)
+
+        logger.info("Data chat completed successfully")
+
+        return response
 
     except Exception as error:
+        logger.exception("Data chat failed")
+
         raise HTTPException(
             status_code=500,
             detail=f"Data chat failed: {error}",

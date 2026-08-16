@@ -1082,11 +1082,47 @@ Au premier lancement, pytest ne trouvait pas le module `src` :
 
 ```text
 ModuleNotFoundError: No module named 'src'
+
 ## Solution
+
 Création du fichier pytest.ini avec :
 [pytest]
 pythonpath = .
 testpaths = tests
+
 ## Résultat
+
 Les premiers tests unitaires du projet sont en place.
 Ils vérifient les KPIs, les analyses top produits/pays et l'endpoint /health.
+
+## Tâche 11.2 - Logs Et Gestion D'Erreurs
+
+### Objectif
+Améliorer la lisibilité des logs et la gestion des erreurs du backend FastAPI.
+
+### Ce Qui A Été Fait
+- Ajout d'une configuration `logging` dans `backend/main.py`.
+- Création d'un logger avec `logging.getLogger(__name__)`.
+- Ajout d'un log sur l'endpoint `/health`.
+- Ajout de logs dans la fonction `load_csv`.
+- Ajout de logs dans l'endpoint `/chat-docs`.
+- Ajout de logs dans l'endpoint `/chat-data`.
+- Ajout d'un test pour l'endpoint `/dataset-summary`.
+- Vérification avec `pytest`.
+- Vérification du backend avec Docker Compose après modification.
+
+### Ce Que J'ai Appris
+- Les logs permettent de comprendre ce que fait l'application.
+- `logger.info()` sert à enregistrer une information normale.
+- `logger.error()` sert à enregistrer une erreur connue.
+- `logger.exception()` sert à enregistrer une erreur avec son traceback.
+- Il ne faut pas logger des secrets ou des questions utilisateur sensibles.
+- Les logs sont très utiles dans Cloud Run pour diagnostiquer les problèmes.
+- Les tests permettent de vérifier que les changements n'ont pas cassé le backend.
+
+### Résultat
+Le backend affiche maintenant des logs plus clairs lors des appels aux endpoints principaux.
+La gestion d'erreurs de `/chat-docs` et `/chat-data` est plus facile à diagnostiquer.
+
+### Statut
+Validé manuellement avec FastAPI, pytest et Docker Compose.
